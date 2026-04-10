@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ejemplo 4 | Carta Premium Multidioma</title>
+  <meta name="description" content="Carta digital premium multidioma del restaurante Ejemplo 4" />
+  <style>
+    :root {
+      --bg: #0f0f10;
+      --bg-soft: #171719;
+      --panel: rgba(255,255,255,0.06);
+      --panel-2: rgba(255,255,255,0.09);
+      --line: rgba(255,255,255,0.12);
+      --gold: #d6b36a;
+      --gold-2: #f3d18b;
+      --text: #f5f1e8;
+      --muted: #c8c0b2;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 1280px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(214,179,106,0.12), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(214,179,106,0.09), transparent 22%),
+        linear-gradient(180deg, #0a0a0b 0%, #101012 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, select { font: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(10,10,11,.6);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(214,179,106,.45);
+      background: linear-gradient(135deg, rgba(214,179,106,.24), rgba(214,179,106,.06));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 8px 22px rgba(214,179,106,.12);
+      color: var(--gold-2);
+      font-size: 18px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: .25s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      border-color: rgba(214,179,106,.28);
+      background: rgba(255,255,255,.04);
+    }
+
+    .language-box {
+      position: relative;
+    }
+
+    .language-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 190px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      color: var(--text);
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .language-trigger:hover {
+      border-color: rgba(214,179,106,.28);
+      background: rgba(255,255,255,.08);
+    }
+
+    .language-trigger-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .language-caret {
+      transition: transform .28s ease;
+      color: var(--gold-2);
+      font-size: .95rem;
+    }
+
+    .language-box.open .language-caret {
+      transform: rotate(180deg);
+    }
+
+    .language-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 240px;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(214,179,106,.18);
+      background: rgba(18,18,20,.94);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 40px rgba(0,0,0,.34);
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: max-height .35s ease, opacity .28s ease, transform .28s ease;
+    }
+
+    .language-box.open .language-menu {
+      max-height: 420px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .language-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: .22s ease;
+      text-align: left;
+    }
+
+    .language-option:last-child {
+      border-bottom: none;
+    }
+
+    .language-option:hover,
+    .language-option.active {
+      background: rgba(214,179,106,.10);
+    }
+
+    .language-option-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .language-flag {
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    .language-check {
+      color: var(--gold-2);
+      opacity: 0;
+      transition: .2s ease;
+    }
+
+    .language-option.active .language-check {
+      opacity: 1;
+    }
+
+    .hero {
+      padding: 58px 0 24px;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      border: 1px solid rgba(214,179,106,.18);
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03)),
+        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80') center/cover;
+      min-height: 520px;
+      display: grid;
+      align-items: end;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8,8,9,.18) 0%, rgba(8,8,9,.78) 72%, rgba(8,8,9,.95) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: clamp(28px, 4vw, 48px);
+      display: grid;
+      gap: 18px;
+      max-width: 780px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+      color: var(--gold-2);
+      font-size: 13px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(2.8rem, 6vw, 5.6rem);
+      line-height: .96;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-text {
+      margin: 0;
+      color: #ece6da;
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      line-height: 1.7;
+      max-width: 62ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      padding: 14px 18px;
+      border-radius: 999px;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.22);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-2), var(--gold));
+      color: #181512;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .section {
+      padding: 28px 0 54px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+      line-height: 1.05;
+      font-family: Georgia, 'Times New Roman', serif;
+      letter-spacing: -0.03em;
+    }
+
+    .section-subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 60ch;
+      line-height: 1.7;
+    }
+
+    .category-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .category-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      color: var(--text);
+      padding: 18px 18px;
+      border-radius: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+      cursor: pointer;
+      transition: .25s ease;
+      text-align: left;
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+      border-color: rgba(214,179,106,.34);
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, rgba(214,179,106,.18), rgba(255,255,255,.05));
+    }
+
+    .category-btn small {
+      color: var(--muted);
+      display: block;
+      margin-top: 4px;
+      font-size: .86rem;
+    }
+
+    .category-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .menu-layout {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 94px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-title {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .sidebar-text {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: .95rem;
+    }
+
+    .sidebar-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.03);
+      transition: .22s ease;
+      cursor: pointer;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      border-color: rgba(214,179,106,.32);
+      background: rgba(214,179,106,.10);
+    }
+
+    .sidebar-link span:last-child {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .menu-panel {
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .menu-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .menu-top h3 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    .menu-top p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .counter {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(214,179,106,.24);
+      color: var(--gold-2);
+      background: rgba(214,179,106,.08);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .dish-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .dish-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      background: rgba(255,255,255,.04);
+      transition: transform .26s ease, border-color .26s ease, box-shadow .26s ease;
+      cursor: pointer;
+    }
+
+    .dish-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(214,179,106,.32);
+      box-shadow: 0 18px 34px rgba(0,0,0,.22);
+    }
+
+    .dish-image-wrap {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+    }
+
+    .dish-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease;
+    }
+
+    .dish-card:hover .dish-image {
+      transform: scale(1.06);
+    }
+
+    .dish-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(15,15,16,.74);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.08);
+      color: var(--gold-2);
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .dish-content {
+      padding: 16px 16px 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .dish-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .dish-title {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.3;
+    }
+
+    .dish-price {
+      color: var(--gold-2);
+      font-weight: 800;
+      white-space: nowrap;
+      letter-spacing: .01em;
+    }
+
+    .dish-desc {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: .95rem;
+    }
+
+    .dish-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .mini-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+    }
+
+    .cta-banner {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 22px;
+      border: 1px solid rgba(214,179,106,.16);
+      background: linear-gradient(135deg, rgba(214,179,106,.14), rgba(255,255,255,.04));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .cta-banner h4 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+    }
+
+    .cta-banner p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .footer {
+      padding: 24px 0 44px;
+      color: var(--muted);
+    }
+
+    .footer-card {
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer strong {
+      color: var(--text);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 999;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-card {
+      position: relative;
+      z-index: 2;
+      width: min(980px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, #171718, #0f0f10);
+      box-shadow: 0 24px 80px rgba(0,0,0,.42);
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+    }
+
+    .modal-media { min-height: 100%; background: #111; }
+
+    .modal-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 380px;
+    }
+
+    .modal-body {
+      padding: 26px;
+      display: grid;
+      align-content: start;
+      gap: 16px;
+    }
+
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      line-height: 1.08;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    .close-btn {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border-radius: 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .modal-price {
+      color: var(--gold-2);
+      font-weight: 800;
+      font-size: 1.06rem;
+    }
+
+    .modal-desc,
+    .modal-meta {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .ingredients,
+    .allergens {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ingredients h4,
+    .allergens h4 {
+      margin: 0 0 2px;
+      font-size: .98rem;
+      color: var(--text);
+      letter-spacing: .02em;
+    }
+
+    .ingredient-list,
+    .allergen-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .ingredient-chip,
+    .allergen-chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #efe7d7;
+      font-size: .92rem;
+    }
+
+    .allergen-chip {
+      background: rgba(214,179,106,.10);
+      border-color: rgba(214,179,106,.16);
+      color: var(--gold-2);
+    }
+
+    @media (max-width: 1024px) {
+      .menu-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .modal-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar-inner {
+        min-height: auto;
+        padding: 14px 0;
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .topbar-right { width: 100%; justify-content: space-between; }
+      .hero-card { min-height: 460px; }
+      .menu-panel, .sidebar { padding: 18px; }
+      .dish-grid { grid-template-columns: 1fr; }
+      .category-bar { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .container { width: min(calc(100% - 22px), var(--max)); }
+      .hero { padding-top: 36px; }
+      .hero-card { border-radius: 26px; }
+      .category-bar { grid-template-columns: 1fr; }
+      .modal-body { padding: 18px; }
+      .language-box { width: 100%; justify-content: space-between; }
+      .nav-links { width: 100%; justify-content: space-between; }
+    }
+  
+    /* AJUSTE: quitar categorías duplicadas */
+    .menu-layout { grid-template-columns: 1fr !important; }
+    .sidebar { display: none !important; }
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="#inicio" class="brand" aria-label="Ir al inicio">
+        <div class="brand-mark">E4</div>
+        <div><div>Ejemplo 4</div></div>
+      </a>
+
+      <div class="topbar-right">
+        <nav class="nav-links" aria-label="Navegación principal">
+          <a class="nav-link" href="#inicio" data-ui="navHome"></a>
+          <a class="nav-link" href="#carta" data-ui="navMenu"></a>
+          <a class="nav-link" href="#seleccion" data-ui="navSelection"></a>
+          <a class="nav-link" href="#info" data-ui="navInfo"></a>
+        </nav>
+
+        <div class="language-box" id="languageDropdown">
+          <button class="language-trigger" id="languageTrigger" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="language-trigger-inner">
+              <span class="language-flag" id="currentLanguageFlag">🇪🇸</span>
+              <span id="currentLanguageName">Español</span>
+            </span>
+            <span class="language-caret">▾</span>
+          </button>
+
+          <div class="language-menu" id="languageMenu">
+            <button class="language-option active" type="button" data-lang="es">
+              <span class="language-option-left"><span class="language-flag">🇪🇸</span><span>Español</span></span>
+              <span class="language-check">✓</span>
+            </button>
+            <button class="language-option" type="button" data-lang="en">
+              <span class="language-option-left"><span class="language-flag">🇬🇧</span><span>English</span></span>
+              <span class="language-check">✓</span>
+            </button>
+            <button class="language-option" type="button" data-lang="fr">
+              <span class="language-option-left"><span class="language-flag">🇫🇷</span><span>Français</span></span>
+              <span class="language-check">✓</span>
+            </button>
+            <button class="language-option" type="button" data-lang="de">
+              <span class="language-option-left"><span class="language-flag">🇩🇪</span><span>Deutsch</span></span>
+              <span class="language-check">✓</span>
+            </button>
+            <button class="language-option" type="button" data-lang="it">
+              <span class="language-option-left"><span class="language-flag">🇮🇹</span><span>Italiano</span></span>
+              <span class="language-check">✓</span>
+            </button>
+            <button class="language-option" type="button" data-lang="pt">
+              <span class="language-option-left"><span class="language-flag">🇵🇹</span><span>Português</span></span>
+              <span class="language-check">✓</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <div class="eyebrow" data-ui="eyebrow"></div>
+            <h1 data-ui="heroTitle"></h1>
+            <p class="hero-text" data-ui="heroText"></p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#carta" data-ui="viewMenu"></a>
+              <button class="btn btn-secondary" type="button" id="scrollToFeatured" data-ui="viewHighlights"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="carta">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" data-ui="menuTitle"></h2>
+            <p class="section-subtitle" data-ui="menuSubtitle"></p>
+          </div>
+        </div>
+        <div class="category-bar" id="categoryBar"></div>
+      </div>
+    </section>
+
+    <section class="section" id="seleccion">
+      <div class="container menu-layout">
+        <aside class="sidebar" id="info">
+          <h3 class="sidebar-title" data-ui="sidebarTitle"></h3>
+          <p class="sidebar-text" data-ui="sidebarText"></p>
+          <div class="sidebar-list" id="sidebarList"></div>
+        </aside>
+
+        <div class="menu-panel">
+          <div class="menu-top">
+            <div>
+              <h3 id="currentCategoryTitle"></h3>
+              <p id="currentCategoryText"></p>
+            </div>
+            <div class="counter" id="dishCounter">0</div>
+          </div>
+
+          <div class="dish-grid" id="dishGrid"></div>
+
+          <div class="cta-banner">
+            <div>
+              <h4 data-ui="visitTitle"></h4>
+              <p><span data-ui="phoneLabel"></span>: <a href="tel:604835465">604 835 465</a> · <span data-ui="locationLabel"></span>: Avenida del Sabor 24, Centro Gastronómico, Sevilla</p>
+            </div>
+            <a href="tel:604835465" class="btn btn-primary" id="callNowButton" data-ui="callNow"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-card">
+        <div>
+          <strong>Ejemplo 4</strong><br />
+          <span data-ui="footerText"></span>
+        </div>
+        <div>
+          <span data-ui="phoneLabel"></span>: <a href="tel:604835465">604 835 465</a><br />
+          <span data-ui="locationLabel"></span>: Avenida del Sabor 24, Centro Gastronómico, Sevilla
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="dishModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-grid">
+        <div class="modal-media">
+          <img id="modalImage" src="" alt="Imagen del plato" />
+        </div>
+        <div class="modal-body">
+          <div class="modal-top">
+            <div>
+              <div class="modal-price" id="modalPrice"></div>
+              <h3 class="modal-title" id="modalTitle"></h3>
+            </div>
+            <button class="close-btn" id="closeModal" aria-label="Cerrar">×</button>
+          </div>
+
+          <p class="modal-desc" id="modalDescription"></p>
+          <p class="modal-meta" id="modalMeta"></p>
+
+          <div class="ingredients">
+            <h4 data-ui="ingredientsTitle"></h4>
+            <div class="ingredient-list" id="modalIngredients"></div>
+          </div>
+
+          <div class="allergens">
+            <h4 data-ui="allergensTitle"></h4>
+            <div class="allergen-list" id="modalAllergens"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const uiText = {
+      es: {
+        navHome: 'Inicio',
+        navMenu: 'Carta',
+        navSelection: 'Selección',
+        navInfo: 'Info',
+        language: 'Idioma',
+        eyebrow: 'Carta digital premium',
+        heroTitle: 'Una experiencia gastronómica para recordar.',
+        heroText: 'Carta digital visual, clara e interactiva, con navegación por apartados, fotografías para cada plato y fichas completas con ingredientes y alérgenos.',
+        viewMenu: 'Ver carta',
+        viewHighlights: 'Ver destacados',
+        menuTitle: 'Carta interactiva',
+        menuSubtitle: 'Pulsa en una categoría para mostrar sus platos. Después, toca cualquier comida para abrir su ficha completa con ingredientes y detalles.',
+        sidebarTitle: 'Apartados de la carta',
+        sidebarText: 'Navegación lateral para cambiar rápidamente entre apartados y visualizar el número de platos disponibles en cada categoría.',
+        dishLabelSingle: 'plato',
+        dishLabelPlural: 'platos',
+        viewIngredients: 'Ver ingredientes',
+        visitTitle: 'Reserva o ven a visitarnos',
+        phoneLabel: 'Teléfono',
+        locationLabel: 'Ubicación',
+        callNow: 'Llamar ahora',
+        footerText: 'Restaurante de cocina actual con carta visual e interactiva.',
+        ingredientsTitle: 'Ingredientes',
+        allergensTitle: 'Alérgenos',
+        noAllergens: 'Sin alérgenos destacados',
+        closeAria: 'Cerrar'
+      },
+      en: {
+        navHome: 'Home',
+        navMenu: 'Menu',
+        navSelection: 'Selection',
+        navInfo: 'Info',
+        language: 'Language',
+        eyebrow: 'Premium digital menu',
+        heroTitle: 'A dining experience to remember.',
+        heroText: 'A visual, clear and interactive digital menu with category navigation, dish photography and full cards with ingredients and allergens.',
+        viewMenu: 'View menu',
+        viewHighlights: 'View highlights',
+        menuTitle: 'Interactive menu',
+        menuSubtitle: 'Tap a category to show its dishes. Then tap any item to open its full card with ingredients and details.',
+        sidebarTitle: 'Menu sections',
+        sidebarText: 'Side navigation to switch quickly between sections and view how many dishes each category contains.',
+        dishLabelSingle: 'dish',
+        dishLabelPlural: 'dishes',
+        viewIngredients: 'View ingredients',
+        visitTitle: 'Book or come visit us',
+        phoneLabel: 'Phone',
+        locationLabel: 'Location',
+        callNow: 'Call now',
+        footerText: 'Contemporary restaurant with a visual and interactive menu.',
+        ingredientsTitle: 'Ingredients',
+        allergensTitle: 'Allergens',
+        noAllergens: 'No major allergens',
+        closeAria: 'Close'
+      },
+      fr: {
+        navHome: 'Accueil',
+        navMenu: 'Carte',
+        navSelection: 'Sélection',
+        navInfo: 'Infos',
+        language: 'Langue',
+        eyebrow: 'Carte digitale premium',
+        heroTitle: 'Une expérience gastronomique inoubliable.',
+        heroText: 'Une carte digitale visuelle, claire et interactive avec navigation par catégories, photos de chaque plat et fiches complètes avec ingrédients et allergènes.',
+        viewMenu: 'Voir la carte',
+        viewHighlights: 'Voir les incontournables',
+        menuTitle: 'Carte interactive',
+        menuSubtitle: 'Appuyez sur une catégorie pour afficher ses plats. Ensuite, touchez un plat pour ouvrir sa fiche complète avec ingrédients et détails.',
+        sidebarTitle: 'Rubriques de la carte',
+        sidebarText: 'Navigation latérale pour changer rapidement de rubrique et voir le nombre de plats disponibles dans chaque catégorie.',
+        dishLabelSingle: 'plat',
+        dishLabelPlural: 'plats',
+        viewIngredients: 'Voir les ingrédients',
+        visitTitle: 'Réservez ou venez nous rendre visite',
+        phoneLabel: 'Téléphone',
+        locationLabel: 'Adresse',
+        callNow: 'Appeler',
+        footerText: 'Restaurant de cuisine actuelle avec carte visuelle et interactive.',
+        ingredientsTitle: 'Ingrédients',
+        allergensTitle: 'Allergènes',
+        noAllergens: 'Sans allergènes majeurs',
+        closeAria: 'Fermer'
+      },
+      de: {
+        navHome: 'Start',
+        navMenu: 'Speisekarte',
+        navSelection: 'Auswahl',
+        navInfo: 'Info',
+        language: 'Sprache',
+        eyebrow: 'Premium-Digitalkarte',
+        heroTitle: 'Ein kulinarisches Erlebnis, das in Erinnerung bleibt.',
+        heroText: 'Eine visuelle, klare und interaktive digitale Speisekarte mit Kategorien, Fotos zu jedem Gericht sowie vollständigen Karten mit Zutaten und Allergenen.',
+        viewMenu: 'Speisekarte ansehen',
+        viewHighlights: 'Highlights ansehen',
+        menuTitle: 'Interaktive Speisekarte',
+        menuSubtitle: 'Wähle eine Kategorie, um die Gerichte anzuzeigen. Tippe anschließend auf ein Gericht, um die vollständige Karte mit Zutaten und Details zu öffnen.',
+        sidebarTitle: 'Bereiche der Karte',
+        sidebarText: 'Seitennavigation, um schnell zwischen den Bereichen zu wechseln und die Anzahl der Gerichte pro Kategorie zu sehen.',
+        dishLabelSingle: 'Gericht',
+        dishLabelPlural: 'Gerichte',
+        viewIngredients: 'Zutaten ansehen',
+        visitTitle: 'Reservieren oder besuchen',
+        phoneLabel: 'Telefon',
+        locationLabel: 'Standort',
+        callNow: 'Jetzt anrufen',
+        footerText: 'Modernes Restaurant mit visueller und interaktiver Speisekarte.',
+        ingredientsTitle: 'Zutaten',
+        allergensTitle: 'Allergene',
+        noAllergens: 'Keine wichtigen Allergene',
+        closeAria: 'Schließen'
+      },
+      it: {
+        navHome: 'Home',
+        navMenu: 'Menù',
+        navSelection: 'Selezione',
+        navInfo: 'Info',
+        language: 'Lingua',
+        eyebrow: 'Menù digitale premium',
+        heroTitle: 'Un’esperienza gastronomica da ricordare.',
+        heroText: 'Un menù digitale visivo, chiaro e interattivo con navigazione per categorie, foto per ogni piatto e schede complete con ingredienti e allergeni.',
+        viewMenu: 'Vedi menù',
+        viewHighlights: 'Vedi i piatti top',
+        menuTitle: 'Menù interattivo',
+        menuSubtitle: 'Tocca una categoria per mostrare i piatti. Poi tocca qualsiasi portata per aprire la scheda completa con ingredienti e dettagli.',
+        sidebarTitle: 'Sezioni del menù',
+        sidebarText: 'Navigazione laterale per cambiare rapidamente sezione e vedere quanti piatti ci sono in ogni categoria.',
+        dishLabelSingle: 'piatto',
+        dishLabelPlural: 'piatti',
+        viewIngredients: 'Vedi ingredienti',
+        visitTitle: 'Prenota o vieni a trovarci',
+        phoneLabel: 'Telefono',
+        locationLabel: 'Posizione',
+        callNow: 'Chiama ora',
+        footerText: 'Ristorante di cucina contemporanea con menù visivo e interattivo.',
+        ingredientsTitle: 'Ingredienti',
+        allergensTitle: 'Allergeni',
+        noAllergens: 'Nessun allergene rilevante',
+        closeAria: 'Chiudi'
+      },
+      pt: {
+        navHome: 'Início',
+        navMenu: 'Carta',
+        navSelection: 'Seleção',
+        navInfo: 'Info',
+        language: 'Idioma',
+        eyebrow: 'Carta digital premium',
+        heroTitle: 'Uma experiência gastronómica para recordar.',
+        heroText: 'Carta digital visual, clara e interativa, com navegação por categorias, fotografias de cada prato e fichas completas com ingredientes e alergénios.',
+        viewMenu: 'Ver carta',
+        viewHighlights: 'Ver destaques',
+        menuTitle: 'Carta interativa',
+        menuSubtitle: 'Toque numa categoria para mostrar os pratos. Depois toque em qualquer prato para abrir a ficha completa com ingredientes e detalhes.',
+        sidebarTitle: 'Secções da carta',
+        sidebarText: 'Navegação lateral para mudar rapidamente de secção e ver quantos pratos existem em cada categoria.',
+        dishLabelSingle: 'prato',
+        dishLabelPlural: 'pratos',
+        viewIngredients: 'Ver ingredientes',
+        visitTitle: 'Reserve ou venha visitar-nos',
+        phoneLabel: 'Telefone',
+        locationLabel: 'Localização',
+        callNow: 'Ligar agora',
+        footerText: 'Restaurante de cozinha atual com carta visual e interativa.',
+        ingredientsTitle: 'Ingredientes',
+        allergensTitle: 'Alergénios',
+        noAllergens: 'Sem alergénios de destaque',
+        closeAria: 'Fechar'
+      }
+    };
+
+    const menuData = [
+      {
+        id: 'entrantes',
+        icon: '🥗',
+        name: { es: 'Entrantes', en: 'Starters', fr: 'Entrées', de: 'Vorspeisen', it: 'Antipasti', pt: 'Entradas' },
+        short: { es: 'Para empezar', en: 'To begin', fr: 'Pour commencer', de: 'Zum Start', it: 'Per iniziare', pt: 'Para começar' },
+        description: {
+          es: 'Sabores ligeros, frescos y elegantes para abrir la experiencia.',
+          en: 'Light, fresh and elegant flavors to begin the experience.',
+          fr: 'Des saveurs légères, fraîches et élégantes pour commencer l’expérience.',
+          de: 'Leichte, frische und elegante Aromen für den perfekten Auftakt.',
+          it: 'Sapori leggeri, freschi ed eleganti per iniziare l’esperienza.',
+          pt: 'Sabores leves, frescos e elegantes para começar a experiência.'
+        },
+        items: [
+          {
+            name: {
+              es: 'Burrata cremosa con tomates asados',
+              en: 'Creamy burrata with roasted tomatoes',
+              fr: 'Burrata crémeuse aux tomates rôties',
+              de: 'Cremige Burrata mit gerösteten Tomaten',
+              it: 'Burrata cremosa con pomodori arrosto',
+              pt: 'Burrata cremosa com tomates assados'
+            },
+            price: '13,50 €',
+            badge: { es: 'Top ventas', en: 'Best seller', fr: 'Meilleure vente', de: 'Bestseller', it: 'Più richiesto', pt: 'Mais pedido' },
+            prep: {
+              es: 'Preparación suave · Ideal para compartir',
+              en: 'Delicate preparation · Perfect for sharing',
+              fr: 'Préparation délicate · Idéal à partager',
+              de: 'Fein zubereitet · Perfekt zum Teilen',
+              it: 'Preparazione delicata · Perfetta da condividere',
+              pt: 'Preparação suave · Ideal para partilhar'
+            },
+            description: {
+              es: 'Burrata fresca con tomates cherry confitados, aceite de albahaca y pan crujiente artesanal.',
+              en: 'Fresh burrata with confit cherry tomatoes, basil oil and artisan crispy bread.',
+              fr: 'Burrata fraîche avec tomates cerises confites, huile de basilic et pain artisanal croustillant.',
+              de: 'Frische Burrata mit confierten Cherrytomaten, Basilikumöl und knusprigem Bauernbrot.',
+              it: 'Burrata fresca con pomodorini confit, olio al basilico e pane artigianale croccante.',
+              pt: 'Burrata fresca com tomate cherry confitado, azeite de manjericão e pão artesanal crocante.'
+            },
+            ingredients: {
+              es: ['Burrata', 'Tomates cherry', 'Albahaca', 'Aceite de oliva virgen extra', 'Pan artesanal', 'Sal en escamas'],
+              en: ['Burrata', 'Cherry tomatoes', 'Basil', 'Extra virgin olive oil', 'Artisan bread', 'Flaky salt'],
+              fr: ['Burrata', 'Tomates cerises', 'Basilic', 'Huile d’olive vierge extra', 'Pain artisanal', 'Sel en flocons'],
+              de: ['Burrata', 'Cherrytomaten', 'Basilikum', 'Natives Olivenöl extra', 'Hausbrot', 'Meersalzflocken'],
+              it: ['Burrata', 'Pomodorini', 'Basilico', 'Olio extravergine di oliva', 'Pane artigianale', 'Sale in fiocchi'],
+              pt: ['Burrata', 'Tomate cherry', 'Manjericão', 'Azeite virgem extra', 'Pão artesanal', 'Flor de sal']
+            },
+            allergens: {
+              es: ['Lácteos', 'Gluten'],
+              en: ['Dairy', 'Gluten'],
+              fr: ['Lait', 'Gluten'],
+              de: ['Milch', 'Gluten'],
+              it: ['Latticini', 'Glutine'],
+              pt: ['Laticínios', 'Glúten']
+            },
+            image: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Carpaccio de ternera trufado',
+              en: 'Truffled beef carpaccio',
+              fr: 'Carpaccio de bœuf à la truffe',
+              de: 'Rindercarpaccio mit Trüffel',
+              it: 'Carpaccio di manzo al tartufo',
+              pt: 'Carpaccio de novilho trufado'
+            },
+            price: '15,90 €',
+            badge: { es: 'Chef recomienda', en: 'Chef’s choice', fr: 'Choix du chef', de: 'Empfehlung des Küchenchefs', it: 'Scelta dello chef', pt: 'Sugestão do chef' },
+            prep: {
+              es: 'Corte fino · Sabor intenso',
+              en: 'Fine cut · Intense flavor',
+              fr: 'Découpe fine · Saveur intense',
+              de: 'Fein geschnitten · Intensiver Geschmack',
+              it: 'Taglio sottile · Gusto intenso',
+              pt: 'Corte fino · Sabor intenso'
+            },
+            description: {
+              es: 'Láminas de ternera con emulsión trufada, parmesano curado, rúcula fresca y brotes tiernos.',
+              en: 'Thin beef slices with truffle emulsion, aged parmesan, fresh arugula and tender sprouts.',
+              fr: 'Fines tranches de bœuf avec émulsion à la truffe, parmesan affiné, roquette fraîche et jeunes pousses.',
+              de: 'Dünne Rindfleischscheiben mit Trüffelemulsion, gereiftem Parmesan, frischem Rucola und zarten Sprossen.',
+              it: 'Fettine di manzo con emulsione al tartufo, parmigiano stagionato, rucola fresca e germogli.',
+              pt: 'Lâminas de novilho com emulsão de trufa, parmesão curado, rúcula fresca e rebentos tenros.'
+            },
+            ingredients: {
+              es: ['Ternera', 'Trufa', 'Parmesano', 'Rúcula', 'Mostaza suave', 'Aceite de oliva'],
+              en: ['Beef', 'Truffle', 'Parmesan', 'Arugula', 'Mild mustard', 'Olive oil'],
+              fr: ['Bœuf', 'Truffe', 'Parmesan', 'Roquette', 'Moutarde douce', 'Huile d’olive'],
+              de: ['Rindfleisch', 'Trüffel', 'Parmesan', 'Rucola', 'Milder Senf', 'Olivenöl'],
+              it: ['Manzo', 'Tartufo', 'Parmigiano', 'Rucola', 'Senape delicata', 'Olio d’oliva'],
+              pt: ['Novilho', 'Trufa', 'Parmesão', 'Rúcula', 'Mostarda suave', 'Azeite']
+            },
+            allergens: {
+              es: ['Lácteos', 'Mostaza'],
+              en: ['Dairy', 'Mustard'],
+              fr: ['Lait', 'Moutarde'],
+              de: ['Milch', 'Senf'],
+              it: ['Latticini', 'Senape'],
+              pt: ['Laticínios', 'Mostarda']
+            },
+            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Croquetas cremosas de jamón ibérico',
+              en: 'Creamy Iberian ham croquettes',
+              fr: 'Croquettes crémeuses au jambon ibérique',
+              de: 'Cremige Kroketten mit iberischem Schinken',
+              it: 'Crocchette cremose al jamón iberico',
+              pt: 'Croquetes cremosos de presunto ibérico'
+            },
+            price: '11,80 €',
+            badge: { es: 'Tradicional', en: 'Traditional', fr: 'Traditionnel', de: 'Traditionell', it: 'Tradizionale', pt: 'Tradicional' },
+            prep: {
+              es: 'Crujientes por fuera · Cremosas por dentro',
+              en: 'Crispy outside · Creamy inside',
+              fr: 'Croustillantes dehors · Crémeuses dedans',
+              de: 'Außen knusprig · Innen cremig',
+              it: 'Croccanti fuori · Cremose dentro',
+              pt: 'Crocantes por fora · Cremosos por dentro'
+            },
+            description: {
+              es: 'Croquetas artesanas con bechamel sedosa y jamón ibérico, servidas recién hechas.',
+              en: 'Artisan croquettes with silky béchamel and Iberian ham, served freshly made.',
+              fr: 'Croquettes artisanales à la béchamel soyeuse et jambon ibérique, servies minute.',
+              de: 'Hausgemachte Kroketten mit samtiger Béchamel und iberischem Schinken, frisch serviert.',
+              it: 'Crocchette artigianali con besciamella vellutata e jamón iberico, servite appena fatte.',
+              pt: 'Croquetes artesanais com béchamel cremosa e presunto ibérico, servidos na hora.'
+            },
+            ingredients: {
+              es: ['Jamón ibérico', 'Leche', 'Harina', 'Mantequilla', 'Pan rallado', 'Huevo'],
+              en: ['Iberian ham', 'Milk', 'Flour', 'Butter', 'Breadcrumbs', 'Egg'],
+              fr: ['Jambon ibérique', 'Lait', 'Farine', 'Beurre', 'Chapelure', 'Œuf'],
+              de: ['Iberischer Schinken', 'Milch', 'Mehl', 'Butter', 'Paniermehl', 'Ei'],
+              it: ['Jamón iberico', 'Latte', 'Farina', 'Burro', 'Pangrattato', 'Uovo'],
+              pt: ['Presunto ibérico', 'Leite', 'Farinha', 'Manteiga', 'Pão ralado', 'Ovo']
+            },
+            allergens: {
+              es: ['Lácteos', 'Gluten', 'Huevo'],
+              en: ['Dairy', 'Gluten', 'Egg'],
+              fr: ['Lait', 'Gluten', 'Œuf'],
+              de: ['Milch', 'Gluten', 'Ei'],
+              it: ['Latticini', 'Glutine', 'Uovo'],
+              pt: ['Laticínios', 'Glúten', 'Ovo']
+            },
+            image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=80'
+          }
+        ]
+      },
+      {
+        id: 'principales',
+        icon: '🍽️',
+        name: { es: 'Principales', en: 'Main courses', fr: 'Plats principaux', de: 'Hauptgerichte', it: 'Piatti principali', pt: 'Pratos principais' },
+        short: { es: 'Platos estrella', en: 'Signature dishes', fr: 'Plats signatures', de: 'Highlights', it: 'Piatti firma', pt: 'Pratos de destaque' },
+        description: {
+          es: 'Creaciones equilibradas con producto, técnica y mucha personalidad.',
+          en: 'Balanced creations with great ingredients, technique and personality.',
+          fr: 'Des créations équilibrées avec produit, technique et personnalité.',
+          de: 'Ausgewogene Kreationen mit Produkt, Technik und Charakter.',
+          it: 'Creazioni equilibrate con prodotto, tecnica e personalità.',
+          pt: 'Criações equilibradas com produto, técnica e muita personalidade.'
+        },
+        items: [
+          {
+            name: {
+              es: 'Solomillo premium con parmentier',
+              en: 'Premium sirloin with parmentier',
+              fr: 'Filet premium avec parmentier',
+              de: 'Premium-Filet mit Parmentier',
+              it: 'Filetto premium con parmentier',
+              pt: 'Lombo premium com parmentier'
+            },
+            price: '24,90 €',
+            badge: { es: 'Premium', en: 'Premium', fr: 'Premium', de: 'Premium', it: 'Premium', pt: 'Premium' },
+            prep: {
+              es: 'Punto a elegir',
+              en: 'Cooked to your liking',
+              fr: 'Cuisson au choix',
+              de: 'Garstufe nach Wahl',
+              it: 'Cottura a scelta',
+              pt: 'Ponto à escolha'
+            },
+            description: {
+              es: 'Solomillo de vacuno a la parrilla con crema de patata, salsa de vino tinto y verduras glaseadas.',
+              en: 'Grilled beef sirloin with potato cream, red wine sauce and glazed vegetables.',
+              fr: 'Filet de bœuf grillé avec crème de pomme de terre, sauce au vin rouge et légumes glacés.',
+              de: 'Gegrilltes Rinderfilet mit Kartoffelcreme, Rotweinsauce und glasiertem Gemüse.',
+              it: 'Filetto di manzo alla griglia con crema di patate, salsa al vino rosso e verdure glassate.',
+              pt: 'Lombo de vaca grelhado com creme de batata, molho de vinho tinto e legumes glaceados.'
+            },
+            ingredients: {
+              es: ['Solomillo de vacuno', 'Patata', 'Mantequilla', 'Vino tinto', 'Zanahoria baby', 'Espárragos'],
+              en: ['Beef sirloin', 'Potato', 'Butter', 'Red wine', 'Baby carrots', 'Asparagus'],
+              fr: ['Filet de bœuf', 'Pomme de terre', 'Beurre', 'Vin rouge', 'Mini carottes', 'Asperges'],
+              de: ['Rinderfilet', 'Kartoffel', 'Butter', 'Rotwein', 'Babykarotten', 'Spargel'],
+              it: ['Filetto di manzo', 'Patata', 'Burro', 'Vino rosso', 'Carote baby', 'Asparagi'],
+              pt: ['Lombo de vaca', 'Batata', 'Manteiga', 'Vinho tinto', 'Cenouras baby', 'Espargos']
+            },
+            allergens: {
+              es: ['Lácteos', 'Sulfitos'],
+              en: ['Dairy', 'Sulfites'],
+              fr: ['Lait', 'Sulfites'],
+              de: ['Milch', 'Sulfite'],
+              it: ['Latticini', 'Solfiti'],
+              pt: ['Laticínios', 'Sulfitos']
+            },
+            image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Arroz meloso de marisco',
+              en: 'Creamy seafood rice',
+              fr: 'Riz crémeux aux fruits de mer',
+              de: 'Cremiger Meeresfrüchtereis',
+              it: 'Riso cremoso ai frutti di mare',
+              pt: 'Arroz cremoso de marisco'
+            },
+            price: '21,50 €',
+            badge: { es: 'Mar y sabor', en: 'Sea & flavor', fr: 'Mer et saveur', de: 'Meer & Geschmack', it: 'Mare e sapore', pt: 'Mar e sabor' },
+            prep: {
+              es: 'Meloso · Intenso',
+              en: 'Creamy · Intense',
+              fr: 'Crémeux · Intense',
+              de: 'Cremig · Intensiv',
+              it: 'Cremoso · Intenso',
+              pt: 'Cremoso · Intenso'
+            },
+            description: {
+              es: 'Arroz cocinado lentamente con caldo de marisco, gambones, sepia y mejillones.',
+              en: 'Rice slowly cooked with seafood stock, king prawns, cuttlefish and mussels.',
+              fr: 'Riz mijoté avec bouillon de fruits de mer, gambas, seiche et moules.',
+              de: 'Langsam gegarter Reis mit Meeresfrüchtefond, Garnelen, Sepia und Muscheln.',
+              it: 'Riso cotto lentamente con brodo di mare, gamberoni, seppia e cozze.',
+              pt: 'Arroz cozinhado lentamente com caldo de marisco, gambões, choco e mexilhões.'
+            },
+            ingredients: {
+              es: ['Arroz', 'Gambones', 'Sepia', 'Mejillones', 'Caldo de marisco', 'Pimiento rojo'],
+              en: ['Rice', 'King prawns', 'Cuttlefish', 'Mussels', 'Seafood stock', 'Red pepper'],
+              fr: ['Riz', 'Gambas', 'Seiche', 'Moules', 'Bouillon de fruits de mer', 'Poivron rouge'],
+              de: ['Reis', 'Großgarnelen', 'Sepia', 'Muscheln', 'Meeresfrüchtefond', 'Rote Paprika'],
+              it: ['Riso', 'Gamberoni', 'Seppia', 'Cozze', 'Brodo di mare', 'Peperone rosso'],
+              pt: ['Arroz', 'Gambões', 'Choco', 'Mexilhões', 'Caldo de marisco', 'Pimento vermelho']
+            },
+            allergens: {
+              es: ['Crustáceos', 'Moluscos', 'Pescado'],
+              en: ['Crustaceans', 'Mollusks', 'Fish'],
+              fr: ['Crustacés', 'Mollusques', 'Poisson'],
+              de: ['Krustentiere', 'Weichtiere', 'Fisch'],
+              it: ['Crostacei', 'Molluschi', 'Pesce'],
+              pt: ['Crustáceos', 'Moluscos', 'Peixe']
+            },
+            image: 'https://images.unsplash.com/photo-1515443961218-a51367888e4b?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Lubina al horno con cítricos',
+              en: 'Baked sea bass with citrus',
+              fr: 'Bar rôti aux agrumes',
+              de: 'Ofen-Wolfsbarsch mit Zitrusfrüchten',
+              it: 'Spigola al forno agli agrumi',
+              pt: 'Robalo no forno com citrinos'
+            },
+            price: '22,40 €',
+            badge: { es: 'Ligero', en: 'Light', fr: 'Léger', de: 'Leicht', it: 'Leggero', pt: 'Leve' },
+            prep: {
+              es: 'Horno · Acabado cítrico',
+              en: 'Oven baked · Citrus finish',
+              fr: 'Au four · Finition agrumes',
+              de: 'Im Ofen · Mit Zitrusnote',
+              it: 'Al forno · Finitura agrumata',
+              pt: 'Forno · Toque cítrico'
+            },
+            description: {
+              es: 'Lubina entera al horno con limón, naranja, hinojo tierno y patata panadera.',
+              en: 'Whole baked sea bass with lemon, orange, fennel and sliced potatoes.',
+              fr: 'Bar entier rôti avec citron, orange, fenouil tendre et pommes de terre fondantes.',
+              de: 'Ganze Wolfsbarsch im Ofen mit Zitrone, Orange, Fenchel und Ofenkartoffeln.',
+              it: 'Spigola intera al forno con limone, arancia, finocchio tenero e patate.',
+              pt: 'Robalo inteiro no forno com limão, laranja, funcho e batata fatiada.'
+            },
+            ingredients: {
+              es: ['Lubina', 'Limón', 'Naranja', 'Hinojo', 'Patata', 'Aceite de oliva'],
+              en: ['Sea bass', 'Lemon', 'Orange', 'Fennel', 'Potato', 'Olive oil'],
+              fr: ['Bar', 'Citron', 'Orange', 'Fenouil', 'Pomme de terre', 'Huile d’olive'],
+              de: ['Wolfsbarsch', 'Zitrone', 'Orange', 'Fenchel', 'Kartoffel', 'Olivenöl'],
+              it: ['Spigola', 'Limone', 'Arancia', 'Finocchio', 'Patata', 'Olio d’oliva'],
+              pt: ['Robalo', 'Limão', 'Laranja', 'Funcho', 'Batata', 'Azeite']
+            },
+            allergens: {
+              es: ['Pescado'],
+              en: ['Fish'],
+              fr: ['Poisson'],
+              de: ['Fisch'],
+              it: ['Pesce'],
+              pt: ['Peixe']
+            },
+            image: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1200&q=80'
+          }
+        ]
+      },
+      {
+        id: 'postres',
+        icon: '🍰',
+        name: { es: 'Postres', en: 'Desserts', fr: 'Desserts', de: 'Desserts', it: 'Dessert', pt: 'Sobremesas' },
+        short: { es: 'El final perfecto', en: 'The perfect ending', fr: 'La fin parfaite', de: 'Der perfekte Abschluss', it: 'Il finale perfetto', pt: 'O final perfeito' },
+        description: {
+          es: 'Dulces con presencia, textura y un gran cierre de experiencia.',
+          en: 'Desserts with presence, texture and a memorable finish.',
+          fr: 'Des desserts avec présence, texture et une belle finale.',
+          de: 'Desserts mit Textur, Charakter und einem starken Abschluss.',
+          it: 'Dolci con carattere, consistenza e un finale memorabile.',
+          pt: 'Sobremesas com textura, presença e um grande final.'
+        },
+        items: [
+          {
+            name: {
+              es: 'Tarta de queso cremosa al horno',
+              en: 'Creamy baked cheesecake',
+              fr: 'Cheesecake crémeux au four',
+              de: 'Cremiger Ofen-Cheesecake',
+              it: 'Cheesecake cremosa al forno',
+              pt: 'Cheesecake cremosa no forno'
+            },
+            price: '7,50 €',
+            badge: { es: 'Favorita', en: 'Favorite', fr: 'Préférée', de: 'Favorit', it: 'Preferita', pt: 'Favorita' },
+            prep: {
+              es: 'Cremosa', en: 'Creamy', fr: 'Crémeuse', de: 'Cremig', it: 'Cremosa', pt: 'Cremosa'
+            },
+            description: {
+              es: 'Tarta de queso horneada lentamente con centro fundente y coulis de frutos rojos.',
+              en: 'Slow-baked cheesecake with a molten center and red berry coulis.',
+              fr: 'Cheesecake cuit lentement avec cœur fondant et coulis de fruits rouges.',
+              de: 'Langsam gebackener Käsekuchen mit cremigem Kern und Beeren-Coulis.',
+              it: 'Cheesecake cotta lentamente con cuore morbido e coulis ai frutti rossi.',
+              pt: 'Cheesecake cozida lentamente com centro cremoso e coulis de frutos vermelhos.'
+            },
+            ingredients: {
+              es: ['Queso crema', 'Huevos', 'Azúcar', 'Nata', 'Galleta', 'Frutos rojos'],
+              en: ['Cream cheese', 'Eggs', 'Sugar', 'Cream', 'Biscuit', 'Red berries'],
+              fr: ['Fromage frais', 'Œufs', 'Sucre', 'Crème', 'Biscuit', 'Fruits rouges'],
+              de: ['Frischkäse', 'Eier', 'Zucker', 'Sahne', 'Keks', 'Beeren'],
+              it: ['Formaggio cremoso', 'Uova', 'Zucchero', 'Panna', 'Biscotto', 'Frutti rossi'],
+              pt: ['Queijo creme', 'Ovos', 'Açúcar', 'Natas', 'Bolacha', 'Frutos vermelhos']
+            },
+            allergens: {
+              es: ['Lácteos', 'Huevo', 'Gluten'],
+              en: ['Dairy', 'Egg', 'Gluten'],
+              fr: ['Lait', 'Œuf', 'Gluten'],
+              de: ['Milch', 'Ei', 'Gluten'],
+              it: ['Latticini', 'Uovo', 'Glutine'],
+              pt: ['Laticínios', 'Ovo', 'Glúten']
+            },
+            image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Coulant de chocolate con helado',
+              en: 'Chocolate fondant with ice cream',
+              fr: 'Coulant au chocolat et glace',
+              de: 'Schokoladenküchlein mit Eis',
+              it: 'Coulant al cioccolato con gelato',
+              pt: 'Coulant de chocolate com gelado'
+            },
+            price: '7,90 €',
+            badge: { es: 'Chocolate lovers', en: 'Chocolate lovers', fr: 'Amateurs de chocolat', de: 'Für Schokofans', it: 'Per amanti del cioccolato', pt: 'Para amantes de chocolate' },
+            prep: {
+              es: 'Corazón fundente',
+              en: 'Molten center',
+              fr: 'Cœur fondant',
+              de: 'Flüssiger Kern',
+              it: 'Cuore fondente',
+              pt: 'Centro cremoso'
+            },
+            description: {
+              es: 'Bizcocho de chocolate caliente con interior líquido y helado artesano de vainilla.',
+              en: 'Warm chocolate cake with a liquid center and artisan vanilla ice cream.',
+              fr: 'Gâteau chaud au chocolat avec cœur coulant et glace artisanale à la vanille.',
+              de: 'Warmer Schokoladenkuchen mit flüssigem Kern und hausgemachtem Vanilleeis.',
+              it: 'Tortino caldo al cioccolato con cuore liquido e gelato artigianale alla vaniglia.',
+              pt: 'Bolo quente de chocolate com interior líquido e gelado artesanal de baunilha.'
+            },
+            ingredients: {
+              es: ['Chocolate negro', 'Mantequilla', 'Harina', 'Huevo', 'Azúcar', 'Helado de vainilla'],
+              en: ['Dark chocolate', 'Butter', 'Flour', 'Egg', 'Sugar', 'Vanilla ice cream'],
+              fr: ['Chocolat noir', 'Beurre', 'Farine', 'Œuf', 'Sucre', 'Glace vanille'],
+              de: ['Zartbitterschokolade', 'Butter', 'Mehl', 'Ei', 'Zucker', 'Vanilleeis'],
+              it: ['Cioccolato fondente', 'Burro', 'Farina', 'Uovo', 'Zucchero', 'Gelato alla vaniglia'],
+              pt: ['Chocolate negro', 'Manteiga', 'Farinha', 'Ovo', 'Açúcar', 'Gelado de baunilha']
+            },
+            allergens: {
+              es: ['Gluten', 'Lácteos', 'Huevo'],
+              en: ['Gluten', 'Dairy', 'Egg'],
+              fr: ['Gluten', 'Lait', 'Œuf'],
+              de: ['Gluten', 'Milch', 'Ei'],
+              it: ['Glutine', 'Latticini', 'Uovo'],
+              pt: ['Glúten', 'Laticínios', 'Ovo']
+            },
+            image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Torrija caramelizada con crema inglesa',
+              en: 'Caramelized brioche toast with custard',
+              fr: 'Pain brioché caramélisé à la crème anglaise',
+              de: 'Karamellisierter Brioche-Toast mit Vanillecreme',
+              it: 'Torrija caramellata con crema inglese',
+              pt: 'Rabanada caramelizada com creme inglês'
+            },
+            price: '8,10 €',
+            badge: { es: 'Tradición', en: 'Classic', fr: 'Tradition', de: 'Tradition', it: 'Tradizione', pt: 'Tradição' },
+            prep: {
+              es: 'Caliente', en: 'Warm', fr: 'Chaud', de: 'Warm', it: 'Calda', pt: 'Quente'
+            },
+            description: {
+              es: 'Pan brioche infusionado, acabado caramelizado y crema inglesa aromática.',
+              en: 'Infused brioche bread with a caramelized finish and aromatic custard.',
+              fr: 'Pain brioché infusé, finition caramélisée et crème anglaise parfumée.',
+              de: 'Aromatisiertes Briochebrot mit karamellisierter Oberfläche und feiner Vanillecreme.',
+              it: 'Pane brioche aromatizzato, finitura caramellata e crema inglese profumata.',
+              pt: 'Pão brioche infusionado, acabamento caramelizado e creme inglês aromático.'
+            },
+            ingredients: {
+              es: ['Pan brioche', 'Leche', 'Canela', 'Azúcar', 'Huevo', 'Vainilla'],
+              en: ['Brioche bread', 'Milk', 'Cinnamon', 'Sugar', 'Egg', 'Vanilla'],
+              fr: ['Pain brioché', 'Lait', 'Cannelle', 'Sucre', 'Œuf', 'Vanille'],
+              de: ['Briochebrot', 'Milch', 'Zimt', 'Zucker', 'Ei', 'Vanille'],
+              it: ['Pane brioche', 'Latte', 'Cannella', 'Zucchero', 'Uovo', 'Vaniglia'],
+              pt: ['Pão brioche', 'Leite', 'Canela', 'Açúcar', 'Ovo', 'Baunilha']
+            },
+            allergens: {
+              es: ['Gluten', 'Lácteos', 'Huevo'],
+              en: ['Gluten', 'Dairy', 'Egg'],
+              fr: ['Gluten', 'Lait', 'Œuf'],
+              de: ['Gluten', 'Milch', 'Ei'],
+              it: ['Glutine', 'Latticini', 'Uovo'],
+              pt: ['Glúten', 'Laticínios', 'Ovo']
+            },
+            image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1200&q=80'
+          }
+        ]
+      },
+      {
+        id: 'bebidas',
+        icon: '🍸',
+        name: { es: 'Bebidas', en: 'Drinks', fr: 'Boissons', de: 'Getränke', it: 'Bevande', pt: 'Bebidas' },
+        short: { es: 'Brindis y maridaje', en: 'To toast and pair', fr: 'Toast et accords', de: 'Zum Anstoßen', it: 'Brindisi e abbinamento', pt: 'Brinde e harmonização' },
+        description: {
+          es: 'Cócteles, refrescos y bebidas pensadas para acompañar cada momento.',
+          en: 'Cocktails, soft drinks and beverages designed for every moment.',
+          fr: 'Cocktails, boissons fraîches et créations pensées pour chaque instant.',
+          de: 'Cocktails, Erfrischungen und Getränke für jeden Moment.',
+          it: 'Cocktail, soft drink e bevande pensate per ogni momento.',
+          pt: 'Cocktails, refrigerantes e bebidas pensadas para cada momento.'
+        },
+        items: [
+          {
+            name: {
+              es: 'Mojito clásico premium',
+              en: 'Premium classic mojito',
+              fr: 'Mojito classique premium',
+              de: 'Premium Classic Mojito',
+              it: 'Mojito classico premium',
+              pt: 'Mojito clássico premium'
+            },
+            price: '9,50 €',
+            badge: { es: 'Cóctel', en: 'Cocktail', fr: 'Cocktail', de: 'Cocktail', it: 'Cocktail', pt: 'Cocktail' },
+            prep: {
+              es: 'Muy fresco',
+              en: 'Extra fresh',
+              fr: 'Très frais',
+              de: 'Sehr frisch',
+              it: 'Molto fresco',
+              pt: 'Muito fresco'
+            },
+            description: {
+              es: 'Ron blanco, lima fresca, hierbabuena, azúcar de caña y soda.',
+              en: 'White rum, fresh lime, mint, cane sugar and soda.',
+              fr: 'Rhum blanc, citron vert frais, menthe, sucre de canne et soda.',
+              de: 'Weißer Rum, frische Limette, Minze, Rohrzucker und Soda.',
+              it: 'Rum bianco, lime fresco, menta, zucchero di canna e soda.',
+              pt: 'Rum branco, lima fresca, hortelã, açúcar de cana e soda.'
+            },
+            ingredients: {
+              es: ['Ron blanco', 'Lima', 'Hierbabuena', 'Azúcar de caña', 'Soda', 'Hielo'],
+              en: ['White rum', 'Lime', 'Mint', 'Cane sugar', 'Soda', 'Ice'],
+              fr: ['Rhum blanc', 'Citron vert', 'Menthe', 'Sucre de canne', 'Soda', 'Glace'],
+              de: ['Weißer Rum', 'Limette', 'Minze', 'Rohrzucker', 'Soda', 'Eis'],
+              it: ['Rum bianco', 'Lime', 'Menta', 'Zucchero di canna', 'Soda', 'Ghiaccio'],
+              pt: ['Rum branco', 'Lima', 'Hortelã', 'Açúcar de cana', 'Soda', 'Gelo']
+            },
+            allergens: {
+              es: ['Sin alérgenos destacados'],
+              en: ['No major allergens'],
+              fr: ['Sans allergènes majeurs'],
+              de: ['Keine wichtigen Allergene'],
+              it: ['Nessun allergene rilevante'],
+              pt: ['Sem alergénios de destaque']
+            },
+            image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Limonada de la casa',
+              en: 'Homemade lemonade',
+              fr: 'Limonade maison',
+              de: 'Hausgemachte Limonade',
+              it: 'Limonata della casa',
+              pt: 'Limonada da casa'
+            },
+            price: '4,90 €',
+            badge: { es: 'Refrescante', en: 'Refreshing', fr: 'Rafraîchissante', de: 'Erfrischend', it: 'Rinfrescante', pt: 'Refrescante' },
+            prep: {
+              es: 'Hecha al momento',
+              en: 'Made to order',
+              fr: 'Préparée à la minute',
+              de: 'Frisch zubereitet',
+              it: 'Preparata al momento',
+              pt: 'Feita na hora'
+            },
+            description: {
+              es: 'Limonada natural con toque de menta y piel de limón.',
+              en: 'Natural lemonade with a hint of mint and lemon zest.',
+              fr: 'Limonade naturelle avec touche de menthe et zeste de citron.',
+              de: 'Natürliche Limonade mit Minze und Zitronenschale.',
+              it: 'Limonata naturale con tocco di menta e scorza di limone.',
+              pt: 'Limonada natural com toque de hortelã e casca de limão.'
+            },
+            ingredients: {
+              es: ['Limón', 'Agua', 'Azúcar', 'Menta', 'Hielo'],
+              en: ['Lemon', 'Water', 'Sugar', 'Mint', 'Ice'],
+              fr: ['Citron', 'Eau', 'Sucre', 'Menthe', 'Glace'],
+              de: ['Zitrone', 'Wasser', 'Zucker', 'Minze', 'Eis'],
+              it: ['Limone', 'Acqua', 'Zucchero', 'Menta', 'Ghiaccio'],
+              pt: ['Limão', 'Água', 'Açúcar', 'Hortelã', 'Gelo']
+            },
+            allergens: {
+              es: ['Sin alérgenos destacados'],
+              en: ['No major allergens'],
+              fr: ['Sans allergènes majeurs'],
+              de: ['Keine wichtigen Allergene'],
+              it: ['Nessun allergene rilevante'],
+              pt: ['Sem alergénios de destaque']
+            },
+            image: 'https://images.unsplash.com/photo-1499638673689-79a0b5115d87?auto=format&fit=crop&w=1200&q=80'
+          },
+          {
+            name: {
+              es: 'Copa de vino tinto reserva',
+              en: 'Glass of reserve red wine',
+              fr: 'Verre de vin rouge réserve',
+              de: 'Glas Reserva-Rotwein',
+              it: 'Calice di vino rosso riserva',
+              pt: 'Copo de vinho tinto reserva'
+            },
+            price: '5,80 €',
+            badge: { es: 'Maridaje', en: 'Pairing', fr: 'Accord', de: 'Pairing', it: 'Abbinamento', pt: 'Harmonização' },
+            prep: {
+              es: 'Servido a temperatura óptima',
+              en: 'Served at ideal temperature',
+              fr: 'Servi à température idéale',
+              de: 'Bei idealer Temperatur serviert',
+              it: 'Servito alla temperatura ideale',
+              pt: 'Servido à temperatura ideal'
+            },
+            description: {
+              es: 'Selección de vino tinto reserva con notas especiadas y fruta madura.',
+              en: 'Selection of reserve red wine with spicy notes and ripe fruit.',
+              fr: 'Sélection de vin rouge réserve aux notes épicées et fruits mûrs.',
+              de: 'Ausgewählter Reserva-Rotwein mit würzigen Noten und reifer Frucht.',
+              it: 'Selezione di vino rosso riserva con note speziate e frutta matura.',
+              pt: 'Seleção de vinho tinto reserva com notas especiadas e fruta madura.'
+            },
+            ingredients: {
+              es: ['Uva tinta'],
+              en: ['Red grapes'],
+              fr: ['Raisin noir'],
+              de: ['Rote Trauben'],
+              it: ['Uva rossa'],
+              pt: ['Uvas tintas']
+            },
+            allergens: {
+              es: ['Sulfitos'],
+              en: ['Sulfites'],
+              fr: ['Sulfites'],
+              de: ['Sulfite'],
+              it: ['Solfiti'],
+              pt: ['Sulfitos']
+            },
+            image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80'
+          }
+        ]
+      }
+    ];
+
+    const categoryBar = document.getElementById('categoryBar');
+    const sidebarList = document.getElementById('sidebarList');
+    const dishGrid = document.getElementById('dishGrid');
+    const currentCategoryTitle = document.getElementById('currentCategoryTitle');
+    const currentCategoryText = document.getElementById('currentCategoryText');
+    const dishCounter = document.getElementById('dishCounter');
+    const languageDropdown = document.getElementById('languageDropdown');
+    const languageTrigger = document.getElementById('languageTrigger');
+    const languageMenu = document.getElementById('languageMenu');
+    const currentLanguageFlag = document.getElementById('currentLanguageFlag');
+    const currentLanguageName = document.getElementById('currentLanguageName');
+
+    const modal = document.getElementById('dishModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalMeta = document.getElementById('modalMeta');
+    const modalIngredients = document.getElementById('modalIngredients');
+    const modalAllergens = document.getElementById('modalAllergens');
+    const closeModal = document.getElementById('closeModal');
+
+    let activeCategory = menuData[0].id;
+    let currentLang = 'es';
+
+    const languageMeta = {
+      es: { name: 'Español', flag: '🇪🇸' },
+      en: { name: 'English', flag: '🇬🇧' },
+      fr: { name: 'Français', flag: '🇫🇷' },
+      de: { name: 'Deutsch', flag: '🇩🇪' },
+      it: { name: 'Italiano', flag: '🇮🇹' },
+      pt: { name: 'Português', flag: '🇵🇹' }
+    };
+
+    const getText = (obj) => obj?.[currentLang] ?? obj?.es ?? '';
+    const getArray = (obj) => obj?.[currentLang] ?? obj?.es ?? [];
+
+    function translateUi() {
+      document.documentElement.lang = currentLang;
+      document.querySelectorAll('[data-ui]').forEach(el => {
+        const key = el.dataset.ui;
+        if (uiText[currentLang][key]) {
+          el.textContent = uiText[currentLang][key];
+        }
+      });
+
+      currentLanguageFlag.textContent = languageMeta[currentLang].flag;
+      currentLanguageName.textContent = languageMeta[currentLang].name;
+      languageTrigger.setAttribute('aria-label', `${uiText[currentLang].language}: ${languageMeta[currentLang].name}`);
+      closeModal.setAttribute('aria-label', uiText[currentLang].closeAria);
+
+      document.querySelectorAll('.language-option').forEach(option => {
+        option.classList.toggle('active', option.dataset.lang === currentLang);
+      });
+
+      renderSidebar();
+      renderCategories();
+      renderDishes();
+    }
+
+    function renderCategories() {
+      categoryBar.innerHTML = menuData.map(category => `
+        <button class="category-btn ${category.id === activeCategory ? 'active' : ''}" data-category="${category.id}">
+          <div>
+            <strong>${getText(category.name)}</strong>
+            <small>${getText(category.short)}</small>
+          </div>
+          <div class="category-icon">${category.icon}</div>
+        </button>
+      `).join('');
+      bindCategoryEvents();
+    }
+
+    function renderSidebar() {
+      sidebarList.innerHTML = menuData.map(category => `
+        <button class="sidebar-link ${category.id === activeCategory ? 'active' : ''}" data-category="${category.id}">
+          <span>${category.icon} ${getText(category.name)}</span>
+          <span>${category.items.length}</span>
+        </button>
+      `).join('');
+      bindCategoryEvents();
+    }
+
+    function renderDishes() {
+      const category = menuData.find(c => c.id === activeCategory);
+      currentCategoryTitle.textContent = getText(category.name);
+      currentCategoryText.textContent = getText(category.description);
+      dishCounter.textContent = `${category.items.length} ${category.items.length === 1 ? uiText[currentLang].dishLabelSingle : uiText[currentLang].dishLabelPlural}`;
+
+      dishGrid.innerHTML = category.items.map((item, index) => `
+        <article class="dish-card" data-category="${category.id}" data-index="${index}" tabindex="0" aria-label="${getText(item.name)}">
+          <div class="dish-image-wrap">
+            <img class="dish-image" src="${item.image}" alt="${getText(item.name)}" loading="lazy" />
+            <div class="dish-badge">${getText(item.badge)}</div>
+          </div>
+          <div class="dish-content">
+            <div class="dish-row">
+              <h4 class="dish-title">${getText(item.name)}</h4>
+              <div class="dish-price">${item.price}</div>
+            </div>
+            <p class="dish-desc">${getText(item.description)}</p>
+            <div class="dish-footer">
+              <span class="mini-chip">${uiText[currentLang].viewIngredients}</span>
+              <span>${getText(item.prep)}</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      bindDishEvents();
+    }
+
+    function setCategory(id) {
+      activeCategory = id;
+      renderCategories();
+      renderSidebar();
+      renderDishes();
+    }
+
+    function openDish(categoryId, itemIndex) {
+      const category = menuData.find(c => c.id === categoryId);
+      const item = category.items[itemIndex];
+      modalImage.src = item.image;
+      modalImage.alt = getText(item.name);
+      modalPrice.textContent = item.price;
+      modalTitle.textContent = getText(item.name);
+      modalDescription.textContent = getText(item.description);
+      modalMeta.textContent = `${getText(category.name)} · ${getText(item.prep)}`;
+
+      modalIngredients.innerHTML = getArray(item.ingredients).map(ingredient => `
+        <span class="ingredient-chip">${ingredient}</span>
+      `).join('');
+
+      modalAllergens.innerHTML = getArray(item.allergens).map(allergen => `
+        <span class="allergen-chip">${allergen}</span>
+      `).join('');
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDishModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function bindCategoryEvents() {
+      document.querySelectorAll('[data-category]').forEach(el => {
+        el.addEventListener('click', () => setCategory(el.dataset.category));
+      });
+    }
+
+    function bindDishEvents() {
+      document.querySelectorAll('.dish-card').forEach(card => {
+        const handler = () => openDish(card.dataset.category, Number(card.dataset.index));
+        card.addEventListener('click', handler);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handler();
+          }
+        });
+      });
+    }
+
+    languageTrigger.addEventListener('click', () => {
+      const isOpen = languageDropdown.classList.toggle('open');
+      languageTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('.language-option').forEach(option => {
+      option.addEventListener('click', () => {
+        currentLang = option.dataset.lang;
+        translateUi();
+        languageDropdown.classList.remove('open');
+        languageTrigger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!languageDropdown.contains(e.target)) {
+        languageDropdown.classList.remove('open');
+        languageTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.getElementById('scrollToFeatured').addEventListener('click', () => {
+      document.getElementById('seleccion').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    closeModal.addEventListener('click', closeDishModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target.dataset.close === 'true') closeDishModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeDishModal();
+    });
+
+    translateUi();
+  </script>
+</body>
+</html>
